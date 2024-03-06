@@ -31,7 +31,12 @@
 	Vadim Strijov \\
 	FRC CSC of the RAS\\
 	Moscow, Russia\\
-        strijov@phystech.edu \\
+        \texttt{strijov@phystech.edu} \\
+        \And
+	Яковлев Константин \\
+	Кафедра интеллектуальных систем\\
+	МФТИ\\
+	\texttt{iakovlev.kd@phystech.edu} \\
 	% Santa Narimana, Levand \\
 	% \texttt{stariate@ee.mount-sheikh.edu} \\
 	%% \AND
@@ -75,20 +80,59 @@ pdfkeywords={First keyword, Second keyword, More},
 
 \keywords{Riemannian Generative Models \and Trades}
 
-% \section{Introduction}
-% \lipsum[2]
-% \lipsum[3]
+\section{Introduction}
+Развитие технологий, которое мы наблюдаем в последние годы, открывает перед нами широкие возможности для получения данных, передаваемых человеком с помощью различных устройств. Анализ данных систем, предназначенных для мониторинга состояния человека, позволяет решать задачи в сфере здравоохранения, которые включают в себя анализ сигналов головного мозга [1], мониторинга физической активности [2]. Задача прогнозирования временного ряда является важной частью анализа сигналов и может использоваться во многих биомедицинских приложениях.
 
-% \section{Headings: first level}
-% \label{sec:headings}
+В данной работе предлагается метод прогнозирования временных рядов с высокой ковариацией и высокой дисперсией. Предлагаемое решение задачи прогнозирования состоит из трех этапов. Во-первых, осуществляется построение пространства парных расстояний, где используемая метрика удовлетворяет условию Мерсера. Во-вторых, выполняется прогноз матрицы попарных расстояний. В-третьих, результат возвращается в исходное пространство.  В данной работе изучаются Римановы генеративные диффузные модели (RSGMs) [3] для выполнения прогнозирования матрицы попарных расстояний.
 
-% \lipsum[4] See Section \ref{sec:headings}.
 
-% \subsection{Headings: second level}
-% \lipsum[5]
-% \begin{equation}
-% 	\xi _{ij}(t)=P(x_{t}=i,x_{t+1}=j|y,v,w;\theta)= {\frac {\alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}{\sum _{i=1}^{N} \sum _{j=1}^{N} \alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}}
-% \end{equation}
+Классическими алгоритмами прогнозирования временных рядов являются метод SSA (Singular Spectrum Analysis) [4], LSTM [5], State space model [6]. Новизна предложенного метода заключается в том, что выполняется кодирование временных рядов с помощью матрицы расстояний, выполненяется прогноз, а затем декодирование полученной матрицы.
+
+Анализ предлагаемого метода прогнозирования проводится на синтетических и реальных данных. Синтетический набор данных построен на основе синусоидальных сигналах со случайной амплитудой и частотой. Реальные данные были получены с помощью акселерометра, а так же на основе финансовых временных рядов. Целью эксперимента является нахождение оптимальной модели для прогнозирования временных рядов.
+
+\section{Problem Statement}
+\label{sec:headings}
+
+Даны временные ряды с высокой ковариацией и высокой дисперсией
+
+% See Section \ref{sec:headings}.
+
+\begin{equation}
+	x_1, x_2, \ldots, x_t \in \mathbb{R}^d,
+\end{equation}
+
+где $d$ — количество временных рядов.
+
+Нужно спрогнозировать $x_{t+1}$.
+
+Алгоритм:
+
+1. Построить матрицу расстояний.
+
+\begin{equation}
+\hat{\Sigma}_T = \frac{1}{T} \sum_{t=1}^{T} (x_t - \mu_T)(x_t - \mu_T)^T
+\end{equation}
+
+\begin{equation}
+\mu_T = \frac{1}{T} \sum_{t=1}^{T} x_t
+\end{equation}
+
+2. Спрогнозировать матрицу $\hat{\Sigma}_{T+1}^s \approx \hat{\Sigma}_{T+1} | \hat{\Sigma}_{T}$
+
+Базовый алгоритм - линейная регресиия:
+
+\begin{equation}
+\hat{\Sigma}_{T+1}^s = W \cdot \hat{\Sigma}_{T}
+\end{equation}
+
+
+3. Найти оптимальный $x_{T+1}$ такой, что ошибка прогнозирования временных рядов
+
+\begin{equation}
+    \| \hat{\Sigma}_{T+1}^s - \hat{\Sigma}_{T+1} \|_2 \to \min_{\underset x_{T+1}}
+\end{equation}
+
+
 
 % \subsubsection{Headings: third level}
 % \lipsum[6]
@@ -158,46 +202,55 @@ pdfkeywords={First keyword, Second keyword, More},
 \bibliographystyle{unsrtnat}
 \bibliography{references}
 
-[1] Machine learning package, datasets \\
+[1] S. Vaid, P. Singh and C. Kaur, "EEG Signal Analysis for BCI Interface: A Review," 2015 Fifth International Conference on Advanced Computing & Communication Technologies, Haryana, India, 2015 \\
 
-[2] Trades, Quotes and Prices, Financial Markets Under the Microscope by Jean-Philippe Bouchaud, Julius Bonart, Jonathan Donier, Martin Gould \\
+[2] Amit Purwar, Do Un Jeong and Wan Young Chung, "Activity monitoring from real-time triaxial accelerometer data using sensor network," 2007 International Conference on Control, Automation and Systems, Seoul, Korea (South), 2007 \\
 
-[3] Dataset for "Trades Quotes and Prices" \\
+[3] Riemannian Score-Based Generative Modelling. 
+Valentin De Bortoli, Émile Mathieu, Michael Hutchinson, James Thornton, Yee Whye Teh, Arnaud Doucet, 2022 \\
 
-[4] Introduction to Probabilistic Programming by A. Das, 2020 \\
+[4] Elsner, J.B. and Tsonis, A.A. (1996): Singular Spectrum Analysis. A New Tool in Time Series Analysis, Plenum Press. \\
 
-[5] Foundation of Variational Autoencoder (VAE) by A. Das, 2020 \\
+[5] Hochreiter, Sepp & Schmidhuber, Jürgen. (1997). Long Short-term Memory. Neural computation. \\
 
-[6] From Autoencoder to Beta-VAE by L. Weng, 2018 \\
+[6] Koller D, Friedman N. (2009) Probabilistic Graphical Models. Cambridge, MA: MIT Press. \\
 
-[7] Flow-based Deep Generative Models by L. Weng, 2018 \\
+[7] Dataset for "Trades Quotes and Prices" \\
 
-[8] Normalizing Flows: review by I. Kobyzin et al., 2020 \\
+% [4] Introduction to Probabilistic Programming by A. Das, 2020 \\
 
-[9] Variational Inference with Normalizing Flows by D.J. Rezende, S.
-Mohamed, 2015 \\
+% [5] Foundation of Variational Autoencoder (VAE) by A. Das, 2020 \\
 
-[10] Score-Based Generative Modeling through Stochastic Differential
-Equations by Y. Song et al., 2015 \\
+% [6] From Autoencoder to Beta-VAE by L. Weng, 2018 \\
 
-[11] Denoising diffusion probabilistic models by J. Ho, 2020 \\
+% [7] Flow-based Deep Generative Models by L. Weng, 2018 \\
 
-[12] Deep unsupervised learning using Nonequilibrium Thermodynamics by
-J. Sohl-Dickstein et al., 2015 \\
+% [8] Normalizing Flows: review by I. Kobyzin et al., 2020 \\
 
-[13] An Intuitive Tutorial to Gaussian Processes Regression by J. Wang,
-2020 \\
+% [9] Variational Inference with Normalizing Flows by D.J. Rezende, S.
+% Mohamed, 2015 \\
 
-[14] Extracting fundamental periods to segment biomedical signals
-Anastasia Motrenko, Vadim Strijov \\
+% [10] Score-Based Generative Modeling through Stochastic Differential
+% Equations by Y. Song et al., 2015 \\
 
-[15] Quasi-periodic time series clustering for human activity recognition
-A. V. Grabovoy, V. V. Strijov \\
+% [11] Denoising diffusion probabilistic models by J. Ho, 2020 \\
 
-[16] Selection of superposition of models for railway freight forecasting
-N. D. Uvarov, M. P. Kuznetsov, A. S. Malkova, K. V. Rudakov , V. V. Strijov \\
+% [12] Deep unsupervised learning using Nonequilibrium Thermodynamics by
+% J. Sohl-Dickstein et al., 2015 \\
 
-[17] Dynamic Trading with Predictable Returns and Transaction Costs
-N Garleanu \\
+% [13] An Intuitive Tutorial to Gaussian Processes Regression by J. Wang,
+% 2020 \\
+
+% [14] Extracting fundamental periods to segment biomedical signals
+% Anastasia Motrenko, Vadim Strijov \\
+
+% [15] Quasi-periodic time series clustering for human activity recognition
+% A. V. Grabovoy, V. V. Strijov \\
+
+% [16] Selection of superposition of models for railway freight forecasting
+% N. D. Uvarov, M. P. Kuznetsov, A. S. Malkova, K. V. Rudakov , V. V. Strijov \\
+
+% [17] Dynamic Trading with Predictable Returns and Transaction Costs
+% N Garleanu \\
 
 \end{document}
