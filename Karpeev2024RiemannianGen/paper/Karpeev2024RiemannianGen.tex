@@ -98,12 +98,12 @@ pdfkeywords={First keyword, Second keyword, More},
 % See Section \ref{sec:headings}.
 
 \begin{equation}
-	x_1, x_2, \ldots, x_t \in \mathbb{R}^d,
+	x_1, x_2, \ldots, x_T \in \mathbb{R}^d,
 \end{equation}
 
 где $d$ — количество временных рядов.
 
-Нужно спрогнозировать $x_{t+1}$.
+Нужно спрогнозировать $x_{T+1}$.
 
 Алгоритм:
 
@@ -126,7 +126,7 @@ pdfkeywords={First keyword, Second keyword, More},
 \end{equation}
 
 
-3. Найти оптимальный $x_{T+1}$ такой, что ошибка прогнозирования временных рядов
+3. Найти такой оптимальный $x_{T+1}$, что ошибка прогнозирования временных рядов
 
 \begin{equation}
     \| \hat{\Sigma}_{T+1}^s - \hat{\Sigma}_{T+1} \|_2 \to \min_{\underset x_{T+1}}
