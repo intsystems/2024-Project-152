@@ -79,14 +79,51 @@ pdfkeywords={First keyword, Second keyword, More},
 
 \section{Introduction}
 	Временные ряды возникают во многих прикладных задачах, таких как анализ физической активности, мозговых волн или биржевых котировок. Цель данной работы заключается в представлении нового метода прогнозирования для конкретного типа временных рядов, характеризующихся высокой дисперсией и высокой попарной ковариацией. Задача разбивается на три этапа: сначала исходное пространство временных рядов трансформируется в метрическое пространство (по попарным расстояниям), затем в этом пространстве производится прогноз, после чего результат возвращается в исходное пространство. В данной статье исследуется восстановление ответа в пространство временных рядов, то есть третий этап задачи. Также проводится оценка качества прогноза.
-	
-	Задача прогнозирования \textit{набора} временных рядов заключается в оценке значений временных рядов в наборе в $t+1$ момент времени, зная значения в моменты времени $1, 2, \ldots, t$. Формально, имеется набор векторов $\{\vec{x}_i\}_{i=1}^t$, где $\vec{x}_i \in \mathbb{R}^d$. То есть $d$ временных рядов. Необходимо оценить значение $\vec{x}_{t+1}$.
+		
+	Классические способы предсказания временных рядов, такие как LSTM [1], SSA [2] и многие другие [3], [6] основаны на предсказании значения одного ряда, тогда как в данной работе предлагается анализировать изменение набора временных рядов. Подобное исследование проводится в статье [5], однако в ней делается упор на задаче feature selection.
 	
 	Новизна работы заключается в том, что прогнозирование делается не в исходном пространстве, а в пространстве попарных расстояний. Преимущество данного метода заключается в том, что на реальных наборах временных рядов часто наблюдается зависимость, близкая к линейной, и эта дополнительная информация может улучшить качество итогового прогноза.
 	
-	Метрическое пространство выбирается таким образом, чтобы из него можно было получить ответ. Помимо попарных скалярных произведений, можно использовать функции, являющиеся \textit{Ядрами}, то есть удовлетворяющие условиям Мёрсера.
+	Метрическое пространство выбирается таким образом, чтобы из него можно было получить ответ. Помимо попарных скалярных произведений, можно использовать функции, являющиеся \textit{ядрами}, то есть удовлетворяющие условиям Мёрсера.
 	
 	Эксперимент проводится на биологических и финансовых данных. Цель эксперимента заключается в выборе наилучшего способа построения метрического пространства.
+
+\section{Problem Statement}
+
+\subsection{Formal problem}
+
+Предполагается, что набор временных из $d$ рядов задан $t$ векторами:
+
+$$[\vec{x}_1, \vec{x}_2, \ldots, \vec{x}_t], \forall k: \vec{x}_k \in \mathbb{R}^d $$
+
+$\vec{x}_{t_i, k}$ задаёт собой значение ряда с индексом $k$ в момент времени $t_i$.
+
+Задача заключается в прогнозе $\vec{x}_{t+1}$.
+
+\subsection{Base algorithm}
+
+1. Построить матрицу расстояний.
+
+\begin{equation}
+	\hat{\Sigma}_T = \frac{1}{T} \sum_{t=1}^{T} (x_t - \mu_T)(x_t - \mu_T)^T
+\end{equation}
+
+\begin{equation}
+	\mu_T = \frac{1}{T} \sum_{t=1}^{T} x_t
+\end{equation}
+
+2. Спрогнозировать матрицу расстояний на следующем моменте времени $\hat{\Sigma}_{T+1}^s \approx \hat{\Sigma}_{T+1} | \hat{\Sigma}_{T}$. Линейная регрессия:
+
+\begin{equation}
+	\hat{\Sigma}_{T+1}^s = W \cdot \hat{\Sigma}_{T}
+\end{equation}
+
+
+3. Найти такой оптимальный $x_{T+1}$, что ошибка прогнозирования временных рядов минимальна.
+
+\begin{equation}
+	\| \hat{\Sigma}_{T+1}^s - \hat{\Sigma}_{T+1} \|_2 \to \min_{x_{T+1}}
+\end{equation}
 
 % \section{Headings: first level}
 % \label{sec:headings}
@@ -167,36 +204,20 @@ pdfkeywords={First keyword, Second keyword, More},
 \bibliographystyle{unsrtnat}
 \bibliography{references}
 
-[1] Trades, Quotes and Prices, Financial Markets Under the Microscope by Jean-Philippe Bouchaud, Julius Bonart, Jonathan Donier, Martin Gould\\
+[1] S. Hochreiter, J. Schmidhuber. (1997). Long Short-term Memory. Neural computation.\\
 
-[2] Multidimensional scaling in Riemann Space\\
-Joseph Woelfel, George Barnett\\
+[2] Elsner, J.B. and Tsonis, A.A. (1996): Singular Spectrum Analysis. A New Tool in Time Series Analysis, Plenum Press. \\
 
-[3] Dynamic Trading with Predictable Returns and Transaction Costs\\
-Nicolae Gˆarleanu, Lasse Heje Pedersen\\
-
-[4] Quasi-periodic time series clustering for human activity recognition\\
-A. V. Grabovoy, V. V. Strijov\\
-
-[5] Extracting fundamental periods to segment biomedical signals\\
+[3] Extracting fundamental periods to segment biomedical signals\\
 Anastasia Motrenko, Vadim Strijov\\
 
-[6] Introduction to Probabilistic Programming\\
-A. Das\\
-
-[7] Selection of superposition of models for railway freight forecasting\\
-N. D. Uvarov, M. P. Kuznetsov, A. S. Malkova, K. V. Rudakov, V. V. Strijov\\
-
-[8] Multidimensional scaling\\
+[4] Multidimensional scaling\\
 $https://dept.stat.lsa.umich.edu/~jerrick/courses/stat701/notes/mds.html$
 
-[9] Denoising diffusion probabilistic models\\
-J. Ho\\
-
-[10] Quadratic Programming Feature Selection for Multicorrelated Signal Decoding with Partial Least Squares\\
+[5] Quadratic Programming Feature Selection for Multicorrelated Signal Decoding with Partial Least Squares\\
 R.V. Isachenko, V.V. Strijov\\
 
-[11] Multi-Period Trading via Convex Optimization\\
+[6] Multi-Period Trading via Convex Optimization\\
 Stephen Boyd, Enzo Busseti, Steven Diamond, Ronald N. Kahn
 
 
