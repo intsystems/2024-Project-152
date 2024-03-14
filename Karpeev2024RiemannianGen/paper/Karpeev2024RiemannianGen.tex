@@ -13,7 +13,8 @@
 \usepackage{graphicx}
 \usepackage{natbib}
 \usepackage{doi}
-
+\usepackage{float}
+\usepackage{caption}
 
 
 \title{Порождающие модели для прогнозирования (наборов временных рядов) в метрическом вероятностном пространстве}
@@ -86,7 +87,7 @@ pdfkeywords={First keyword, Second keyword, More},
 В данной работе предлагается метод прогнозирования временных рядов с высокой ковариацией и высокой дисперсией. Предлагаемое решение задачи прогнозирования состоит из трех этапов. Во-первых, осуществляется построение пространства парных расстояний, где используемая метрика удовлетворяет условию Мерсера. Во-вторых, выполняется прогноз матрицы попарных расстояний. В-третьих, результат возвращается в исходное пространство.  В данной работе изучаются Римановы генеративные диффузные модели (RSGMs) [3] для выполнения прогнозирования матрицы попарных расстояний.
 
 
-Классическими алгоритмами прогнозирования временных рядов являются метод SSA (Singular Spectrum Analysis) [4], LSTM [5], State space model [6]. Новизна предложенного метода заключается в том, что выполняется кодирование временных рядов с помощью матрицы расстояний, выполненяется прогноз, а затем декодирование полученной матрицы.
+Классическими алгоритмами прогнозирования временных рядов являются метод SSA (Singular Spectrum Analysis) [4], LSTM [5], State space model [6]. Новизна предложенного метода заключается в том, что выполняется кодирование временных рядов с помощью матрицы расстояний, выполняется прогноз, а затем декодирование полученной матрицы.
 
 Анализ предлагаемого метода прогнозирования проводится на синтетических и реальных данных. Синтетический набор данных построен на основе синусоидальных сигналах со случайной амплитудой и частотой. Реальные данные были получены с помощью акселерометра, а так же на основе финансовых временных рядов. Целью эксперимента является нахождение оптимальной модели для прогнозирования временных рядов.
 
@@ -141,6 +142,46 @@ pdfkeywords={First keyword, Second keyword, More},
 % \lipsum[7]
 
 
+\section{Computation experiment}
+
+Эксперимент проводился на реальных и синтетических данных. Синтетический набор данных построен на основе синусоидальных сигналах со случайной амплитудой и частотой. Реальные данные были получены с энергетической биржи Nord Pool [8] и представляют собой временной ряд цены на электроэнергию. Временной ряд энергии состоит из почасовых записей (всего 50826 наблюдений). 
+
+Для оценивания качества аппроксимации вычисляется значение среднеквадратичной ошибки.
+
+\begin{equation}
+MSE(y_{pred}, y_{true}) = \frac{1}{n} \sum_{i=1}^n (y_{pred} - y_{true})^2
+\end{equation}
+
+Сравним два базовых алгоритма предсказания временных рядов - SSA и MSSA.
+
+\subsection{Синтетические данные}
+
+Сгенерируем выборку из двух синусоидальных сигналов размера $N = 1000$, с количеством периодов 2 и 4, соответственно. Предскажем последние 400 значений выборки, для предсказания будем использовать последние 70 сгенерированных значений.\\
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{figures/sin2_ssa.png}
+	\caption{Прогноз синуса с 2 периодами алгоритмом SSA}
+	\label{fig:fig1}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{figures/sin2_mssa.png}
+	\caption{Прогноз синуса с 2 периодами алгоритмом MSSA}
+	\label{fig:fig2}
+\end{figure}
+
+Видно, что восстановленный ряд получился примерно одинаковый.
+
+\subsection{Данные цен на электроэнергию}
+
+Строка матрицы $X$ –– локальная история сигнала за одну неделю $n = 24 \times 7$. Строка матрицы
+$Y$ — локальный прогноз потребления электроэнергии в следующие 24 часа. Прогноз выполняется с помощью алгоритма SSA
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{figures/electricity_prediction.png}
+	\caption{Прогноз спотовых цен на электроэнергию алгоритмом SSA}
+	\label{fig:fig3}
+\end{figure}
 
 % \section{Examples of citations, figures, tables, references}
 % \label{sec:others}
@@ -155,7 +196,7 @@ pdfkeywords={First keyword, Second keyword, More},
 
 % \subsection{Figures}
 % \lipsum[10]
-% See Figure \ref{fig:fig1}. Here is how you add footnotes. \footnote{Sample of the first footnote.}
+% See Figure \ref{fig:electricity_prediction.png}. Here is how you add footnotes. \footnote{Sample of the first footnote.}
 % \lipsum[11]
 
 % \begin{figure}
@@ -202,7 +243,7 @@ pdfkeywords={First keyword, Second keyword, More},
 \bibliographystyle{unsrtnat}
 \bibliography{references}
 
-[1] S. Vaid, P. Singh and C. Kaur, "EEG Signal Analysis for BCI Interface: A Review," 2015 Fifth International Conference on Advanced Computing & Communication Technologies, Haryana, India, 2015 \\
+[1] S. Vaid, P. Singh and C. Kaur, "EEG Signal Analysis for BCI Interface: A Review, 2015 Fifth International Conference on Advanced Computing \& Communication Technologies, Haryana, India, 2015 \\
 
 [2] Amit Purwar, Do Un Jeong and Wan Young Chung, "Activity monitoring from real-time triaxial accelerometer data using sensor network," 2007 International Conference on Control, Automation and Systems, Seoul, Korea (South), 2007 \\
 
@@ -211,11 +252,14 @@ Valentin De Bortoli, Émile Mathieu, Michael Hutchinson, James Thornton, Yee Why
 
 [4] Elsner, J.B. and Tsonis, A.A. (1996): Singular Spectrum Analysis. A New Tool in Time Series Analysis, Plenum Press. \\
 
-[5] Hochreiter, Sepp & Schmidhuber, Jürgen. (1997). Long Short-term Memory. Neural computation. \\
+[5] Hochreiter, Sepp \& Schmidhuber, Jürgen. (1997). Long Short-term Memory. Neural computation. \\
 
 [6] Koller D, Friedman N. (2009) Probabilistic Graphical Models. Cambridge, MA: MIT Press. \\
 
 [7] Dataset for "Trades Quotes and Prices" \\
+
+[8] Electricity Spot Price Data. 
+https://www.kaggle.com/datasets/arashnic/electricity-spot-price \\
 
 % [4] Introduction to Probabilistic Programming by A. Das, 2020 \\
 
