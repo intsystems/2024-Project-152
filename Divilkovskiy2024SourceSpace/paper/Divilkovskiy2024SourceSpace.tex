@@ -24,8 +24,7 @@
 % 		address)---\emph{not} for acknowledging funding agencies.} \\
 	Chair of Data Analysis\\
 	MIPT\\
-	% Pittsburgh, PA 15213 \\
-	\texttt{divilkovskii.mm@phystech.edu} \\
+	divilkovskii.mm@phystech.edu \\
 	%% examples of more authors
 	\And
 	Vadim Strijov \\
@@ -58,11 +57,10 @@
 %%% Once the PDF is generated, you can check the metadata with
 %%% $ pdfinfo template.pdf
 \hypersetup{
-pdftitle={A template for the arxiv style},
-pdfsubject={q-bio.NC, q-bio.QM},
-pdfauthor={David S.~Hippocampus, Elias D.~Striatum},
-pdfkeywords={First keyword, Second keyword, More},
+pdfauthor={Maxim Divilkovskiy},
 }
+
+\graphicspath{ {./figures/} }
 
 \begin{document}
 \maketitle
@@ -80,7 +78,7 @@ pdfkeywords={First keyword, Second keyword, More},
 \section{Introduction}
 	Временные ряды возникают во многих прикладных задачах, таких как анализ физической активности, мозговых волн или биржевых котировок. Цель данной работы заключается в представлении нового метода прогнозирования для конкретного типа временных рядов, характеризующихся высокой дисперсией и высокой попарной ковариацией. Задача разбивается на три этапа: сначала исходное пространство временных рядов трансформируется в метрическое пространство (по попарным расстояниям), затем в этом пространстве производится прогноз, после чего результат возвращается в исходное пространство. В данной статье исследуется восстановление ответа в пространство временных рядов, то есть третий этап задачи. Также проводится оценка качества прогноза.
 		
-	Классические способы предсказания временных рядов, такие как LSTM [1], SSA [2] и многие другие [3], [6] основаны на предсказании значения одного ряда, тогда как в данной работе предлагается анализировать изменение набора временных рядов. Подобное исследование проводится в статье [5], однако в ней делается упор на задаче feature selection.
+	Классические способы предсказания временных рядов, такие как LSTM \cite{LSTM}, SSA \cite{SSA} и многие другие \cite{Biosignals}, \cite{boyd2017multiperiod} основаны на предсказании значения одного ряда, тогда как в данной работе предлагается анализировать изменение набора временных рядов. Подобное исследование проводится в статье \cite{MulticorrelatedQuadratic}, однако в ней делается упор на задаче feature selection.
 	
 	Новизна работы заключается в том, что прогнозирование делается не в исходном пространстве, а в пространстве попарных расстояний. Преимущество данного метода заключается в том, что на реальных наборах временных рядов часто наблюдается зависимость, близкая к линейной, и эта дополнительная информация может улучшить качество итогового прогноза.
 	
@@ -90,7 +88,7 @@ pdfkeywords={First keyword, Second keyword, More},
 
 \section{Problem Statement}
 
-\subsection{Formal problem}
+\subsection{Formal Problem}
 
 Предполагается, что набор временных из $d$ рядов задан $t$ векторами:
 
@@ -100,7 +98,7 @@ $\vec{x}_{t_i, k}$ задаёт собой значение ряда с инде
 
 Задача заключается в прогнозе $\vec{x}_{t+1}$.
 
-\subsection{Base algorithm}
+\subsection{Base Algorithm}
 
 1. Построить матрицу расстояний.
 
@@ -121,9 +119,50 @@ $\vec{x}_{t_i, k}$ задаёт собой значение ряда с инде
 
 3. Найти такой оптимальный $x_{T+1}$, что ошибка прогнозирования временных рядов минимальна.
 
-\begin{equation}
-	\| \hat{\Sigma}_{T+1}^s - \hat{\Sigma}_{T+1} \|_2 \to \min_{x_{T+1}}
-\end{equation}
+\section{Computational Experiment}
+
+Исследуются следующие алгоритмы прогнозирования:
+
+\begin{itemize}
+	\item LSTM \cite{LSTM}
+	\item SARIMA \cite{ARIMAvsLSTM}
+	\item MSSA \cite{SSA}
+\end{itemize}
+
+\subsection{LSTM}
+
+LSTM, в отличии от обыкновенной RNN позволяет выделять как кратковременные, так и долговременные зависимости, что позволяет с довольно высокой точностью прогнозировать временные ряды.
+
+В качестве теста используется зашумленный временной ряд длины T, состоящий из суммы синусов и косинусов разных амплитуд и сдвигов. Из этого временного ряда генерируется выборка следующим алгоритмом:\\
+1. Выбирается размер окна $W$.\\
+2. Ряд разбивается на $T-W-1$ окон размера $W+1$ со сдвигом 1. Эти окна будут семплами\\
+3. В каждом из полученных окон первые $W$ будут аргументами на данном семпле, а последнее~--- результатом.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{LSTM-prediction.png}
+	\caption{Прогноз с использованием LSTM}
+	\label{fig:fig1}
+\end{figure}
+
+Ряд восстанавливается неплохо, однако минусом является то, что при усложнении данных сильно растёт сложность модели. Так же, LSTM не может работать с многомерными рядами.
+
+\subsection{SARIMA}
+
+ARIMA позволяет находить авторегрессионные зависимости. SARIMA (Seasonal ARIMA) учитывает так же сезонность данных. Это может быть полезным в случае с данными природного характера, как например, температура воздуха или выработка электричества.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{SARIMA-prediction.png}
+	\caption{Прогноз с использованием SARIMA}
+	\label{fig:fig2}
+\end{figure}
+
+Ряд прогнозируется довольно плохо, в случае если он имеет достаточно нетривиальную структуру. Так же, в данных может не быть явной сезонности, что ухудшает точность данного метода.
+
+\subsection{MSSA}
+
+MSSA (Multivariate Singular Spectrum Analysis) в отличие от других методов позволяет брать во внимание корреляцию между несколькими рядами и прогнозировать несколько.
 
 % \section{Headings: first level}
 % \label{sec:headings}
@@ -156,7 +195,7 @@ $\vec{x}_{t_i, k}$ задаёт собой значение ряда с инде
 % Here is an example usage of the two main commands (\verb+citet+ and \verb+citep+): Some people thought a thing \citep{kour2014real, hadash2018estimate} but other people thought something else \citep{kour2014fast}. Many people have speculated that if we knew exactly why \citet{kour2014fast} thought this\dots
 
 % \subsection{Figures}
-% \lipsum[10]
+% \lipsum0]
 % See Figure \ref{fig:fig1}. Here is how you add footnotes. \footnote{Sample of the first footnote.}
 % \lipsum[11]
 
@@ -201,24 +240,9 @@ $\vec{x}_{t_i, k}$ задаёт собой значение ряда с инде
 % \end{itemize}
 
 
-\bibliographystyle{unsrtnat}
+
 \bibliography{references}
-
-[1] S. Hochreiter, J. Schmidhuber. (1997). Long Short-term Memory. Neural computation.\\
-
-[2] Elsner, J.B. and Tsonis, A.A. (1996): Singular Spectrum Analysis. A New Tool in Time Series Analysis, Plenum Press. \\
-
-[3] Extracting fundamental periods to segment biomedical signals\\
-Anastasia Motrenko, Vadim Strijov\\
-
-[4] Multidimensional scaling\\
-$https://dept.stat.lsa.umich.edu/~jerrick/courses/stat701/notes/mds.html$
-
-[5] Quadratic Programming Feature Selection for Multicorrelated Signal Decoding with Partial Least Squares\\
-R.V. Isachenko, V.V. Strijov\\
-
-[6] Multi-Period Trading via Convex Optimization\\
-Stephen Boyd, Enzo Busseti, Steven Diamond, Ronald N. Kahn
+\bibliographystyle{plain}
 
 
 \end{document}
