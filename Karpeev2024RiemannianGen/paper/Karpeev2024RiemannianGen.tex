@@ -156,33 +156,86 @@ MSE(y_{pred}, y_{true}) = \frac{1}{n} \sum_{i=1}^n (y_{pred} - y_{true})^2
 
 \subsection{Синтетические данные}
 
-Сгенерируем выборку из двух синусоидальных сигналов размера $N = 1000$, с количеством периодов 2 и 4, соответственно. Предскажем последние 400 значений выборки, для предсказания будем использовать последние 70 сгенерированных значений.\\
+Сгенерируем выборку из двух синусоидальных сигналов размера $N = 200$, с количеством периодов 2 и 4, соответственно. Предскажем последние 40 значений выборки, для предсказания будем использовать последние 60 сгенерированных значений.\\
+
 \begin{figure}[H]
+    \begin{subfigure}
 	\centering
-	\includegraphics[width=0.75\textwidth]{figures/sin2_ssa.png}
-	\caption{Прогноз синуса с 2 периодами алгоритмом SSA}
-	\label{fig:fig1}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.75\textwidth]{figures/sin2_mssa.png}
-	\caption{Прогноз синуса с 2 периодами алгоритмом MSSA}
+	\includegraphics[width=1\textwidth]{figures/ssa_sin_low_noise.png}
+	\caption{Прогноз синуса с 4 периодами алгоритмом SSA}
 	\label{fig:fig2}
+    \end{subfigure}
+
+    \vspace{\baselineskip}
+
+    \begin{subfigure}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/mssa_2sin_low_noise.png}
+	\caption{Прогноз синуса с 2 и 4 периодами алгоритмом MSSA}
+	\label{fig:fig2}
+    \end{subfigure}
+
+    \vspace{\baselineskip}
+
+    \begin{subfigure}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/lstm_sin_low_noise.png}
+	\caption{Прогноз синуса с 4 периодами алгоритмом LSTM}
+	\label{fig:fig2}
+    \end{subfigure}
+
+    \vspace{\baselineskip}
+
+    \begin{subfigure}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/lstm_sin_high_noise.png}
+	\caption{Прогноз сильно зашумленного синуса с 4 периодами алгоритмом LSTM}
+	\label{fig:fig2}
+    \end{subfigure}
+
+    \vspace{\baselineskip}
+
+    \begin{subfigure}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/mssa_2sin_high_noise.png}
+	\caption{Прогноз сильно зашумленного синуса с 2 и 4 периодами алгоритмом MSSA}
+	\label{fig:fig2}
+    \end{subfigure}
 \end{figure}
 
-Видно, что восстановленный ряд получился примерно одинаковый.
-
+% Видно, что восстановленный ряд получился примерно одинаковый.
 \subsection{Данные цен на электроэнергию}
 
 Строка матрицы $X$ –– локальная история сигнала за одну неделю $n = 24 \times 7$. Строка матрицы
-$Y$ — локальный прогноз потребления электроэнергии в следующие 24 часа. Прогноз выполняется с помощью алгоритма SSA
+$Y$ — локальный прогноз потребления электроэнергии в следующие 24 часа. Прогноз выполняется с помощью алгоритма SSA.
+
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.75\textwidth]{figures/electricity_prediction.png}
+	\includegraphics[width=0.6\textwidth]{figures/correlation_elspots.png}
+	\caption{Корреляция между временными рядами}
+	\label{fig:fig3}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{figures/ssa_elspot_2017_plot.png}
 	\caption{Прогноз спотовых цен на электроэнергию алгоритмом SSA}
 	\label{fig:fig3}
 \end{figure}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{figures/mssa_elspot_6plots.png}
+	\caption{Прогноз спотовых цен по годам на электроэнергию алгоритмом MSSA}
+	\label{fig:fig3}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{figures/optimal_front.png}
+	\caption{Pareto front для MSSA прогноза}
+	\label{fig:fig3}
+\end{figure}
 % \section{Examples of citations, figures, tables, references}
 % \label{sec:others}
 
