@@ -120,3 +120,12 @@ logs/
 */mnist
 *.csv
 !.dvc
+
+*.aux
+*.bbl
+*.blg
+*.out
+*.gz
+*.nav
+*.snm
+*.toc
