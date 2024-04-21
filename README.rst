@@ -24,7 +24,7 @@
 Abstract
 ========
 
-Исследование посвящено задаче прогнозирования набора временных рядов с высокой ковариацией. Исследуются наборы временных рядов с высокой дисперсией. Для решения данной задачи предлагается построение пространства парных расстояний, представляющего метрическую конфигурацию временных рядов. Прогноз осуществляется в этом пространстве, а затем результат возвращается в исходное пространство.
+The research is devoted to the problem of forecasting a set of time series with high covariance. Sets of time series with high variance are studied. To solve this problem, the construction of a space of pairwise distances representing the metric configuration of time series is proposed. The prediction is carried out in this space, and then the result is returned to the original space.
 
 Research publications
 ===============================
