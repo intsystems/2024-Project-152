@@ -186,6 +186,14 @@ $\blacksquare$
 
 3. Найдём тот ответ, который лежит в пересечении.
 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{TwoTAlgo.png}
+	\caption{Возвращение прогноза при идеальном прогнозе Sigma. $T=20$, $T'=10$}
+	\label{fig:fig3}
+\end{figure}
+
 \subsection{Алгоритм при неидеальном прогнозе}
 
 Проблема вышеописанного алгоритма заключается в том, что при неидеальном прогнозе, пересечения может не быть. Более того, если брать два ответа с минимальным расстоянием, мы можем взять не ту пару ответов.
@@ -202,6 +210,13 @@ $\blacksquare$
 \end{gather*}
 
 Далее предлагается перебрать $2^K$ наборов ответов и выбрать тот набор, в котором диаметр минимален.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{TbiLSTM.png}
+	\caption{Возвращение прогноза при неидеальном прогнозе Sigma при помощи Bidirectional LSTM}
+	\label{fig:fig4}
+\end{figure}
 
 \textbf{TODO Математическая логика}
 
