@@ -27,13 +27,18 @@
 % 		address)---\emph{not} for acknowledging funding agencies.} \\
 	Chair of Data Analysis\\
 	MIPT\\
-	divilkovskii.mm@phystech.edu \\
+	\texttt{divilkovskii.mm@phystech.edu} \\
 	%% examples of more authors
 	\And
 	Vadim Strijov \\
 	FRC CSC of the RAS\\
 	Moscow, Russia\\
-        strijov@phystech.edu \\
+    \texttt{strijov@phystech.edu} \\
+    \And
+    Yakovlev Konstantin \\
+    Chair of Intellectual Systems\\
+    MIPT\\
+    \texttt{iakovlev.kd@phystech.edu} \\
 	% Santa Narimana, Levand \\
 	% \texttt{stariate@ee.mount-sheikh.edu} \\
 	%% \AND
@@ -76,7 +81,7 @@ pdfauthor={Maxim Divilkovskiy},
 \end{abstract}
 
 
-\keywords{Riemannian Space \and Trades \and Multidimensional Scaling \and Time Series}
+\keywords{Metric \and Trades \and Multidimensional Scaling \and Time Series Forecasting}
 
 \section{Introduction}
 	Временные ряды возникают во многих прикладных задачах, таких как анализ физической активности, мозговых волн или биржевых котировок. Цель данной работы заключается в представлении нового метода прогнозирования временных рядов, характеризующихся высокой попарной ковариацией. Задача разбивается на три этапа: сначала исходное пространство временных рядов некоторым образом трансформируется в метрическое пространство, затем в этом пространстве производится прогноз матрицы попарных расстояний, после чего результат возвращается в исходное пространство. В данной статье исследуется восстановление ответа в пространство временных рядов.
@@ -166,13 +171,15 @@ $\blacksquare$
 	\mu_T = \frac{1}{T} \sum_{t=1}^{T} x_t
 \end{gather*}
 
-Предположим, что мы идеально спрогнозировали матрицу таким образом. Функция $||\hat{\Sigma}_{t+1} - \bar{\Sigma}_{t+1}||_2^2$ будет иметь два минимума, задающихся явно следующим образом \textbf{TODO ДОБАВИТЬ ВЫВОД ФОРМУЛ}:
+\textbf{Теорема 2.} Предположим, что мы идеально спрогнозировали матрицу таким образом. Функция $||\hat{\Sigma}_{t+1} - \bar{\Sigma}_{t+1}||_2^2$ будет иметь два минимума, задающихся явно следующим образом
 
 \begin{align*}
 	\hat{y_i} &= y_i\\
 	\hat{y_i} &= \frac{2}{T-1} \sum_{k=1}^{T-1} a_{ik} - y_i,
 \end{align*}
-где $\hat{y}_i$~--- $i$-я координата предсказываемого значения ряда в момент $T+1$, $A=(a_{ik})$~--- исходный многомерных временной ряд, $y_i$~--- истинные значения ряда в момент $T+1$
+где $\hat{y}_i$~--- $i$-я координата предсказываемого значения ряда в момент $T+1$, $A=(a_{ik})$~--- исходный многомерных временной ряд, $y_i$~--- истинные значения ряда в момент $T+1$. \textbf{TODO ДОБАВИТЬ ВЫВОД ФОРМУЛ}.
+
+Используя эту формулу, достаточно найти только один из минимумов, второй ищется по формуле через первый.
 
 \subsection{Алгоритм прогноза}
 
@@ -203,13 +210,15 @@ $\blacksquare$
 Тогда мы молучим $K$ наборов ответов:
 
 \begin{gather*}
-	[ans_{11}, ans_{12}],\
-	[ans_{21}, ans_{22}],\
-	\vdots
-	[ans_{K1}, ans_{K2}],\
+	[ans_{11}, ans_{12}],\\
+	[ans_{21}, ans_{22}],\\
+	\vdots \\
+	[ans_{K1}, ans_{K2}]
 \end{gather*}
 
 Далее предлагается перебрать $2^K$ наборов ответов и выбрать тот набор, в котором диаметр минимален.
+
+Асимптотическая сложность данного восстановления будет $O(2^K \times K \times N)$ + сложность используемого алгоритма поиска минимума.
 
 \begin{figure}
 	\centering
