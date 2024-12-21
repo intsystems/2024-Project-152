@@ -21,9 +21,10 @@
 \author[Г.\,А. Карпеев]{Карпеев Глеб Андреевич}
 \institute{Московский физико-технический институт}
 \date{\footnotesize
-\par\smallskip\emph{Курс:} Автоматизация научных исследований\par (практика, В.\,В.~Стрижов)/Группа 128
-\par\smallskip\emph{Эксперт:} В.\,В.~Стрижов
-\par\smallskip\emph{Консультант:} К.~Яковлев
+% \par\smallskip\emph{Курс:} Автоматизация научных исследований\par (практика, В.\,В.~Стрижов)/Группа 128
+\par\smallskip\emph{Научный руководитель:} д.ф-м.н. Стрижов Вадим Викторович
+% \par\smallskip\emph{Эксперт:} В.\,В.~Стрижов
+% \par\smallskip\emph{Консультант:} К.~Яковлев
 \par\bigskip\small 2024}
 %----------------------------------------------------------------------------------------------------------
 \begin{document}
@@ -33,70 +34,393 @@
 \maketitle
 \end{frame}
 %-----------------------------------------------------------------------------------------------------
-% \begin{frame}{Порождающие модели для прогнозирования наборов временных рядов}
-% %\begin{block}{Решается задача}
-% %\end{block}
-% \end{frame}
-%-----------------------------------------------------------------------------------------------------
-\begin{frame}{Порождающие модели для прогнозирования наборов временных рядов}
 
-% Пожалуйста, уберите прочие слайды, если у вас доклад с одним слайдом.
+\begin{frame}{Порождающие модели для прогнозирования (наборов временных рядов) в метрическом вероятностном пространстве}
+\begin{block}{Цель:}
+\begin{itemize}
+ \item Предложить новый метода для прогнозирования
+временных рядов с высокой ковариацией и дисперсией
+\end{itemize}
 
-\begin{columns}[c]
-\column{0.5\textwidth}
+\end{block}
 
-\begin{columns}[c]
-\column{0.5\textwidth}
-\includegraphics[width=1\textwidth]{fig/sin_mssa_small_ampl.png}
-\column{0.5\textwidth}
-\includegraphics[width=1\textwidth]{fig/sin_lstm_small_ampl.png}
-\end{columns}
-    Прогноз синтетических данных с небольшим шумом с помощью MSSA и LSTM
+\begin{block}{Задача:}
+\begin{itemize}
+ \item Выбрать оптимальную модель для прогнозирования функции попарных расстояний между временными рядами
+\end{itemize}
 
-\includegraphics[width=1\textwidth]{fig/sin_lstm_high_ampl.png}
-    Прогноз синтетических данных с большим шумом с помощью LSTM
-\column{0.5\textwidth}
-\includegraphics[width=1.0\textwidth]{real_data_2017.png}
-\includegraphics[width=1.0\textwidth]{real_data_2018.png}
-    Прогноз спотовых цен на электроэнергию методом MSSA
-\end{columns}
+\end{block}
 
-% \bigskip
-% Важное {\color{red}сообщение}.
+\begin{block}{Предлагаемое решение:}
+\begin{itemize}
+    \item [1] Осуществляется построение пространства парных расстояний. Метрика удовлетворяет условию Мерсера.
+
+    \item [2] Выполняется прогноз матрицы попарных расстояний.
+
+    \item [3] Результат возвращается в исходное пространство.
+\end{itemize}
+\end{block}
+
+
 \end{frame}
+%-----------------------------------------------------------------------------------------------------
+\begin{frame}{Используемая литература}
+
+\begin{itemize}
+    \item [1] \textbf{Valentin De Bortoli et al.}  
+    \emph{Riemannian Score-Based Generative Modelling}, 2022.  
+    Используется для построения порождающих моделей в римановых пространствах.  
+
+    \item [2] \textbf{Y. Song, S. Ermon.}  
+    \emph{Generative modeling by estimating gradients of the data distribution.}, 2019.  
+    Источник для базового метода score-based моделей.
+
+    \item [3] \textbf{P. Cattiaux et al.}  
+    \emph{Time reversal of diffusion processes under a finite entropy condition.} 2021.  
+    Используется для вывода уравнения обратной диффузии в римановых многообразиях.
+\end{itemize}
+
+\end{frame}
+%-----------------------------------------------------------------------------------------------------
+% \begin{frame}{Предлагаемое решение}
+
+% % Пожалуйста, уберите прочие слайды, если у вас доклад с одним слайдом.
+
+% \begin{columns}[c]
+% \column{0.5\textwidth}
+
+% \begin{columns}[c]
+% \column{0.5\textwidth}
+% \includegraphics[width=1\textwidth]{fig/sin_mssa_small_ampl.png}
+% \column{0.5\textwidth}
+% \includegraphics[width=1\textwidth]{fig/sin_lstm_small_ampl.png}
+% \end{columns}
+%     Прогноз синтетических данных с небольшим шумом с помощью MSSA и LSTM
+
+% \includegraphics[width=1\textwidth]{fig/sin_lstm_high_ampl.png}
+%     Прогноз синтетических данных с большим шумом с помощью LSTM
+% \column{0.5\textwidth}
+% \includegraphics[width=1.0\textwidth]{real_data_2017.png}
+% \includegraphics[width=1.0\textwidth]{real_data_2018.png}
+%     Прогноз спотовых цен на электроэнергию методом MSSA
+% \end{columns}
+
+    % Во-первых, осуществляется построение пространства парных расстояний, где используемая метрика удовлетворяет условию Мерсера.
+
+    % Во-вторых, выполняется прогноз матрицы попарных расстояний.
+
+    % В-третьих, результат возвращается в исходное пространство.  В данной работе изучаются Римановы генеративные диффузные модели (RSGMs) [3] для выполнения прогнозирования матрицы попарных расстояний.
+
+
+% % \bigskip
+% % Важное {\color{red}сообщение}.
+% \end{frame}
+
 
 
 %----------------------------------------------------------------------------------------------------------
-% \begin{frame}{Постановка задачи}
+
+% \begin{frame}{Score-based generative models (SGMs)}
+
+% \begin{itemize}
+%     Генеративные диффузные модели, также называемые Score-based generative models (SGMs), представляют собой мощный класс генеративных моделей. 
+% \end{itemize}
+
+% \begin{itemize}
+%     SGM состоит из этапа зашумления, на котором к данным постепенно добавляется гауссовский шум, и процесса шумоподавления, на котором генеративная модель постепенно снижает гауссовский шум, чтобы получить образец данных.
+% \end{itemize}
 
 % \end{frame}
+
+
+
 %----------------------------------------------------------------------------------------------------------
-% \begin{frame}{Решение}
+
+
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{Постановка задачи прогнозирования набора временных рядов}
+
+\begin{block}{Дано}
+Временные ряды с высокой ковариацией и дисперсией:  
+\[
+x_1, x_2, \ldots, x_T \in \mathbb{R}^d, \quad d \text{ — количество временных рядов.}
+\]
+
+Матрица попарных расстояний:  
+\[
+\hat{\Sigma}_T = \frac{1}{T} \sum_{t=1}^{T} (x_t - \mu_T)(x_t - \mu_T)^T, \quad \mu_T = \frac{1}{T} \sum_{t=1}^{T} x_t.
+\]
+\end{block}
+
+\begin{block}{Требуется}
+Найти порождающую модель:  
+\[
+f^* = \arg \min_f  \| \hat{\Sigma}_{T+1} - f(\hat{\Sigma}_T)\|^2_2.
+\]
+\end{block}
+
+\end{frame}
+%---------------------------------------------------------------------------------------------------------- 
+\begin{frame}{Порождающие модели (SGMs)} 
+ 
+\begin{block}{Score-Based Generative Models:} 
+\begin{itemize} 
+    \item Процесс зашумления \((X_t)_{t\ge0}\): \[
+dX_t = -X_t \, dt + \sqrt{2} \, dB_t, \quad X_0 \sim p_0, \tag{1}
+\] где $(B_t)_{t \geq 0}$ — $d$-мерное броуновское движение, а $p_0$ — распределение данных. 
+    \item Шумоподавление: \[
+dY_t = \{Y_t + 2 \nabla \log p_{T-t}(Y_t)\} \, dt + \sqrt{2} \, dB_t, \quad Y_0 \sim p_T, \tag{2}
+\]
+где $p_t$ обозначает плотность $X_t$.
+\end{itemize} 
+\end{block} 
+% \begin{block}{Расширение на Римановы пространства:} 
+% \begin{itemize} 
+%     \item Диффузия на многообразии: \(dX_t = -\frac{1}{2} \nabla_M U(X_t)dt + dB^M_t\). 
+%     \item Оценка градиентов (Stein scores) через нейросети. 
+% \end{itemize} 
+% \end{block} 
+ 
+% \begin{figure}[H] 
+% \centering 
+% \includegraphics[width=0.1\textwidth]{fig/grw.png} 
+% \caption{Геодезические случайные блуждания для аппроксимации процессов на многообразии.} 
+% \label{fig:geodesic_rw} 
+% \end{figure} 
+ 
+\end{frame} 
+
+%---------------------------------------------------------------------------------------------------------- 
+\begin{frame}{Римановы пространства} 
+ 
+\begin{block}{Определение:} 
+Риманово пространство \((M, g)\) — это гладкое многообразие \(M\) с римановой метрикой \(g\), которая определяет длину кривых и углы между векторами. 
+\end{block} 
+ 
+% \begin{block}{Основные понятия:} 
+\begin{itemize} 
+    \item Тензор метрики \(g\): \(ds^2 = g_{ij} dx^i dx^j\). 
+    \item Геодезическое расстояние \(d_M(p, q)\) между двумя точками \(p, q \in M\). 
+    % \item Броуновское движение и ядро на многообразиях. 
+\end{itemize} 
+% \end{block} 
+ 
+\begin{figure}[H] 
+\centering 
+\includegraphics[width=0.7\textwidth]{fig/riemannian_manifold.png} 
+\caption{Пример риманова пространства} 
+\label{fig:riemannian_space} 
+\end{figure} 
+ 
+\end{frame} 
+%---------------------------------------------------------------------------------------------------------- 
+\begin{frame}{Римановы порождающие модели (RSGMs)} 
+ 
+\begin{block}{Расширение на Римановы пространства:} 
+\begin{itemize} 
+    \item Процесс зашумления на многообразиях: \[
+dX_t = -\frac{1}{2} \nabla_{X_t} U(X_t) \, dt + dB_t^M, \tag{3}
+\]
+
+где $\nabla$ — риманов градиент, а $B_t^M$ — броуновское движение на $M$. 
+    \begin{theorem}[Обратная диффузия на римановых многообразиях, Cattiaux et al. (2021)]
+\label{thm:time_reversed_diffusion}
+Пусть $T \geq 0$, $(B_t^M)_{t \geq 0}$ — броуновское движение на многообразии $M$. Пусть $(X_t)_{t \in [0, T]}$:
+\(dX_t = b(X_t) \, dt + dB_t^M,\)
+Тогда $(Y_t)_{t \in [0, T]}$ :
+\[
+dY_t = \{-b(Y_t) + \nabla \log p_{T-t}(Y_t)\} \, dt + dB_t^M. \tag{4}
+\]
+\end{theorem}. 
+\end{itemize} 
+\end{block} 
+ 
+\begin{figure}[H] 
+\centering 
+\includegraphics[width=0.2\textwidth]{fig/grw.png} 
+\caption{Геодезические случайные блуждания для аппроксимации процессов на многообразии.} 
+\label{fig:geodesic_rw} 
+\end{figure} 
+ 
+\end{frame} 
+
+%---------------------------------------------------------------------------------------------------------- 
+%---------------------------------------------------------------------------------------------------------- 
+%----------------------------------------------------------------------------------------------------------
+% \begin{frame}{Синтетические данные}
 % \begin{columns}[c]
 % \column{0.6\textwidth}
-%     Столбец 1
+%     Синтетические данные \\
+%     \\
+%     Сгенерируем выборку из двух синусоидальных сигналов размера $N = 200$, с количеством периодов 2 и 4, соответственно.
+%     % Предскажем последние 40 значений выборки, для предсказания будем использовать последние 60 сгенерированных значений.
 % \column{0.4\textwidth}
-%     Столбец 2
+% %     Данные цен на электроэнергию \\
+% %     \\
+% %     Строка матрицы $X$ –– локальная история сигнала за одну неделю $n = 24 \times 7$. Строка матрицы
+% % $Y$ — локальный прогноз потребления электроэнергии в следующие 24 часа.
 % \end{columns}
 % \end{frame}
 %----------------------------------------------------------------------------------------------------------
-% \begin{frame}{Вычислительный эксперимент}
+% \begin{frame}{Вычислительный эксперимент [Синтетические данные]}
 
-%  Что зритель видит на графике.
+% % \begin{figure}
+% % \centering
+% % \includegraphics[width=1\textwidth]{fig/ssa_sin_low_noise.png}
+% % \caption{Прогноз синуса с 4 периодами алгоритмом SSA}
+% % \label{fig:fig2}
+% % \end{figure}
 
-% \includegraphics[width=0.8\textwidth]{ErrorFunction}
+%  %    \vspace{\baselineskip}
 
-% О чем говорит этот график.
+%    \begin{figure}
+% \centering
+% \includegraphics[width=1\textwidth]{fig/mssa_2sin_low_noise.png}
+% \caption{Прогноз синуса с 2 и 4 периодами алгоритмом MSSA}
+% \label{fig:fig2}
+%    \end{figure}
+
+%  %    \vspace{\baselineskip}
+
+%     \begin{figure}
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{fig/lstm_sin_low_noise.png}
+% 	\caption{Прогноз синуса с 4 периодами алгоритмом LSTM}
+% 	\label{fig:fig2}
+%     \end{figure}
+%  \end{frame}
+ 
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{Вычислительный эксперимент [Синтетические данные]}
+
+
+\begin{columns}[c]
+    \column{0.5\textwidth}
+   \begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{fig/sgm_predict.png}
+\caption{Матрицы парных расстояний, семплированные SGM}
+\label{fig:fig22}
+   \end{figure}
+   
+    \column{0.5\textwidth}
+   
+    \begin{figure}
+	\centering
+	\includegraphics[width=1\textwidth]{fig/corr_answers.png}
+	\caption{Реальные матрицы попарных расстояний}
+	\label{fig:fig23}
+    \end{figure}
+  \end{columns}
+
+MAPE предложенного метода генерации матриц: 2, baseline: 4.6
+
+ %    \vspace{\baselineskip}
+
+
+ \end{frame}
+ 
+%----------------------------------------------------------------------------------------------------------
+% \begin{frame}{Вычислительный эксперимент [Данные цен на электроэнергию]}
+
+% \begin{figure}[H]
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{fig/mssa_elspot_6plots.png}
+% 	\caption{Прогноз спотовых цен по годам на электроэнергию алгоритмом MSSA}
+% 	\label{fig:fig3}
+% \end{figure}
+
+% \end{frame}
+
+% \begin{frame}{Анализ ошибки}
+
+% \begin{figure}[H]
+% 	\centering
+% 	\includegraphics[width=1\textwidth]{fig/optimal_front.png}
+% 	\caption{Pareto front для MSSA прогноза, оптимальное прогнозируемое число рядов - 5 }
+% 	\label{fig:fig3}
+% \end{figure}
 
 % \end{frame}
 %----------------------------------------------------------------------------------------------------------
-% \begin{frame}{Заключение}
-%     \begin{block}{Перечислите ваши результаты}
-%     \begin{itemize}
-%         \item предложен метод,
-%         \item доказана теорема.
-%     \end{itemize}
-%     \end{block}
+\begin{frame}{Заключение}
+    \begin{block}{Выводы}
+    \begin{itemize}
+        \item Предложен метод, который выполняет кодирование временных рядов с помощью матрицы расстояний, выполняет прогноз, а затем выполняет декодирование полученной матрицы.
+
+        \item MAPE предложенного метода генерации матрицы попарных расстояний методом SGM - 2, у baseline - 4.6
+        
+    \end{itemize}
+    \end{block}
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+
+
+%---------------------------------------------------------------------------------------------------------- 
+
+
+%---------------------------------------------------------------------------------------------------------- 
+% \begin{frame}{Примеры и результаты RSGMs} 
+ 
+% \begin{block}{Примеры данных:} 
+% \begin{itemize} 
+%     \item Геофизические данные: землетрясения, извержения, пожары. 
+%     \item Синтетические данные: распределения на тора (\(\mathbb{T}^d\)) и \(\text{SO}(3)\). 
+% \end{itemize} 
+% \end{block} 
+ 
+% \begin{columns}[c] 
+%     \column{0.5\textwidth} 
+%     \begin{figure}[H] 
+%     \centering 
+%     \includegraphics[width=0.6\textwidth]{fig/earthquake_density.png} 
+%     \caption{Плотность землетрясений, восстановленная RSGM.} 
+%     \label{fig:earthquake_density} 
+%     \end{figure} 
+%     \column{0.5\textwidth} 
+%     \begin{figure}[H] 
+%     \centering 
+%     \includegraphics[width=1\textwidth]{fig/so3_conditional.png} 
+%     \caption{Распределение на \(\text{SO}(3)\).} 
+%     \label{fig:torus_results} 
+%     \end{figure} 
+% \end{columns} 
+ 
+\end{frame} 
+%---------------------------------------------------------------------------------------------------------- 
+
+%----------------------------------------------------------------------------------------------------------
+% \begin{frame}{Литература}
+
+% [1] Riemannian Score-Based Generative Modelling. 
+% Valentin De Bortoli, Émile Mathieu, Michael Hutchinson, James Thornton, Yee Whye Teh, Arnaud Doucet, 2022 \\
+
+% [2] Y. Song and S. Ermon, “Generative modeling by estimating gradients of the data distribution,” Advances in neural information
+% processing systems, vol. 32, 2019 \\
+
+% [3] Hochreiter, Sepp \& Schmidhuber, Jürgen. (1997). Long Short-term Memory. Neural computation. \\
+
+% [4] Elsner, J.B. and Tsonis, A.A. (1996): Singular Spectrum Analysis. A New Tool in Time Series Analysis, Plenum Press. \\
+
 % \end{frame}
+
+\end{document} 
+\end{frame}
+%-----------------------------------------------------------------------------------------------------
+
+
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{���������� ������}
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{�������}
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{�������������� �����������}
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{����������}
+\end{frame}
 %----------------------------------------------------------------------------------------------------------
 \end{document} 
