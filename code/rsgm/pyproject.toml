@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "score-sde"
+version = "1.0.1a"
+description = ""
+readme = "README.md"
+authors = [
+    { name = "Emile Mathieu", email = "ebm32@cam.ac.uk" },
+    { name = "Michael Hutchinson", email = "michael.hutchinson@stats.ox.ac.uk" },
+    { name = "Florian Pfaff", email = "pfaff@ias.uni-stuttgart.de" }
+]
+classifiers = [
+    "License :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+dependencies = [
+    "jax==0.4.33",
+    "jaxlib==0.4.33",
+    "dm-haiku",
+    "optax==0.2.3",
+    "distrax",
+    "diffrax",
+    "fsspec[http]>=2021.05.0, !=2021.06.0",
+    "joblib",
+    "autograd",
+    "tqdm",
+    "seaborn",
+    "wandb",
+    "hydra_core==1.3.2",
+    "hydra_colorlog==1.2.0",
+    "submitit==1.5.2",
+    "hydra-submitit-launcher==1.2.0",
+    "hydra-joblib-launcher==1.2.0",
+    "pyrecest @ git+https://github.com/FlorianPfaff/pyRecEst.git",
+    "geomstats @ git+https://github.com/FlorianPfaff/geomstats_for_score_sde.git",
+    "numpy<3.0.0"
+]
+
+[tool.setuptools]
+packages = ["riemannian_score_sde"]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov"
+]
